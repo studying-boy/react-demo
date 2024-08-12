@@ -1,7 +1,0 @@
-.delete-btn {
-    display: none;
-}
-
-.li-item:hover .delete-btn {
-    display: inline-block;
-}

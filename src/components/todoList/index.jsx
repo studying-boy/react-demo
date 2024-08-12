@@ -1,35 +1,30 @@
-import React from "react";
-import './index.css';
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux';
+import { Checkbox, Button } from 'antd';
+import { updateData, removeData } from '../../store/todoSlice';
+import './index.scss';
 
-export default class todoList extends React.Component {
-    state = {
-        list: [{ id: 1, text: '第一条todo' }],
-    }
-    addTodo = (e) => {
-        let { list } = this.state;
-        let newItem = { id: list.length + 1, text: e.target.value }
-        this.setState({
-            list: [...list, newItem]
-        })
-        e.target.value = '';
-    }
-    removeItem = (index) => {
-        let { list } = this.state;
-        list.splice(index, 1);
-        this.setState({
-            list
-        })
-    }
-    render() {
-        return (
-            <div>
-                <input type="text" placeholder="请输入todo" onBlur={(event) => this.addTodo(event)} />
-                <ul>
-                    { this.state.list.map((item, index) => {
-                        return <li className="li-item" key={item.id}>{item.id}: {item.text} <button className="delete-btn" onClick={() => this.removeItem(index)}>删除</button></li>
-                    }) }
-                </ul>
-            </div>
-        )
-    }
+export default function TodoList() {
+  const dispatch = useDispatch();
+  const todoList = useSelector(state => state.todo.list);
+
+  const changeCheckbox = (index) => {
+    dispatch(updateData(index))
+  }
+
+  const deleteItem = (index) => {
+    dispatch(removeData(index))
+  }
+
+  return (
+    <div className='todoList-container'>
+      {todoList.map((data, index) => {
+        return <div key={data.text + index} className='item'>
+          <Checkbox checked={data.checked} onChange={() => changeCheckbox(index)}></Checkbox>
+          <span className={data.checked ? 'text isChecked' : 'text'}>{data.text}</span>
+          <Button type="link" onClick={() => deleteItem(index)}>删除</Button>
+        </div>
+      })}
+    </div>
+  )
 }

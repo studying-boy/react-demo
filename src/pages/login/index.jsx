@@ -1,10 +1,13 @@
 import React from "react";
 import { Form, Input, Button, message } from "antd";
 import { useNavigate } from 'react-router-dom';
+import { setUsername } from "../../store/userSlice";
+import { useDispatch } from 'react-redux';
 import './index.css';
 
 export default function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   let [form] = Form.useForm();
   const [ messageApi, contextHolder ] = message.useMessage();
 
@@ -13,6 +16,7 @@ export default function Login() {
     if(username === password) {
       messageApi.success('登录成功')
       localStorage.setItem('isLogin', true);
+      dispatch(setUsername(username));
       navigate('/home');
     } else {
       messageApi.error('用户名或者密码错误')

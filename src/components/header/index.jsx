@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Menu, Button } from 'antd';
+import { useSelector } from 'react-redux';
+import './index.css';
 
 export default function Header() {
   const navigate = useNavigate();
@@ -24,16 +26,15 @@ export default function Header() {
     navigate('/login');
   }
 
-  let userName = '1';
+  const username = useSelector(state => state.user.username) || 'Undefined'
 
   return (
     <div className="header"> 
       <div className="top-container">
-        欢迎，{userName}
+        欢迎，{username}
         <Button type="link" onClick={logout}>退出</Button>
       </div>
       <Menu selectedKeys={currentTab} items={menuList} mode="horizontal" onClick={updateMenu}></Menu>
-      <hr /> 
     </div> 
   )
 }

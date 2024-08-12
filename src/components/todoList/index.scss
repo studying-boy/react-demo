@@ -1,0 +1,12 @@
+.todoList-container {
+  .item {
+    margin-bottom: 5px;
+  }
+}
+
+.text {
+  margin-left: 5px;
+  &.isChecked {
+    text-decoration: line-through;
+  }
+}
