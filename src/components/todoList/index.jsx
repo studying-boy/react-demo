@@ -1,12 +1,14 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux';
 import { Checkbox, Button } from 'antd';
-import { updateData, removeData } from '../../store/todoSlice';
 import './index.scss';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { updateData, removeData } from '../../store/todoSlice';
 
-export default function TodoList() {
+export default function TodoList(props) {
+  const { todoList } = props;
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const todoList = useSelector(state => state.todo.list);
 
   const changeCheckbox = (index) => {
     dispatch(updateData(index))
@@ -16,12 +18,17 @@ export default function TodoList() {
     dispatch(removeData(index))
   }
 
+  const editItem = (index) => {
+    navigate(`/about?num=${index}`);
+  }
+
   return (
     <div className='todoList-container'>
       {todoList.map((data, index) => {
         return <div key={data.text + index} className='item'>
           <Checkbox checked={data.checked} onChange={() => changeCheckbox(index)}></Checkbox>
           <span className={data.checked ? 'text isChecked' : 'text'}>{data.text}</span>
+          <Button type="link" onClick={() => editItem(index)}>编辑</Button>
           <Button type="link" onClick={() => deleteItem(index)}>删除</Button>
         </div>
       })}
